@@ -13,23 +13,27 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return view ('Auth.login');
+        return view('Auth.login');
     }
-    public function logininsert (Request $request)
+    public function logininsert(Request $request)
     {
-        if(auth::attempt($request->only('email','password')))
-        {
+        if (auth::attempt($request->only('email', 'password'))) {
             return \redirect('/dashboard');
         }
-        return redirect('/login');
+        return redirect('/login')->with('error', 'Email atau Password Salah');
     }
 
     public function register()
     {
-        return view ('Auth.register');
+        return view('Auth.register');
     }
-    public function registeruser (Request $request)
+    public function registeruser(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:7',
+        ]);
         User::create([
             'name' => $request->name,
             'email' => $request->email,

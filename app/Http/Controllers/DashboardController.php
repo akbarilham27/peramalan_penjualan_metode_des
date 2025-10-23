@@ -16,17 +16,17 @@ class DashboardController extends Controller
         $jumlahUser = User::count();
 
         //Setiap Produk
-        $transNeutrikJackNC3FXX = Transaksi::where('id_produk', 20)->sum('jumlah_penjualan');
-        $transNeutrikJackNC3MXX = Transaksi::where('id_produk', 21)->sum('jumlah_penjualan');
-        $transKreztJackSpeakonTSC = Transaksi::where('id_produk', 682)->sum('jumlah_penjualan');
-        $transFocusJackMicMaleGCA = Transaksi::where('id_produk', 843)->sum('jumlah_penjualan');
-        $transDAddarioSGAccEJXLite = Transaksi::where('id_produk', 899)->sum('jumlah_penjualan');
-        $transDAddarioSGRegulerEXL = Transaksi::where('id_produk', 903)->sum('jumlah_penjualan');
-        $transCenturionCLEDXRGBW = Transaksi::where('id_produk', 921)->sum('jumlah_penjualan');
-        $transSREXACTJackRCASP116G = Transaksi::where('id_produk', 1621)->sum('jumlah_penjualan');
-        $transSREXACTJackMaleSVP555V = Transaksi::where('id_produk', 1623)->sum('jumlah_penjualan');
-        $transSrexactJackAkaiMonoSP102X = Transaksi::where('id_produk', 1809)->sum('jumlah_penjualan');
-        $transSrexactJackStereoMiniSP110AM = Transaksi::where('id_produk', 1811)->sum('jumlah_penjualan');
+        $transNeutrikJackNC3FXX = Transaksi::where('id_produk', 'BRGP00020')->sum('jumlah_penjualan');
+        $transNeutrikJackNC3MXX = Transaksi::where('id_produk', 'BRGP00021')->sum('jumlah_penjualan');
+        $transKreztJackSpeakonTSC = Transaksi::where('id_produk', 'BRGP00682')->sum('jumlah_penjualan');
+        $transFocusJackMicMaleGCA = Transaksi::where('id_produk', 'BRGP00843')->sum('jumlah_penjualan');
+        $transDAddarioSGAccEJXLite = Transaksi::where('id_produk', 'BRGP00899')->sum('jumlah_penjualan');
+        $transDAddarioSGRegulerEXL = Transaksi::where('id_produk', 'BRGP00903')->sum('jumlah_penjualan');
+        $transCenturionCLEDXRGBW = Transaksi::where('id_produk', 'BRGP00921')->sum('jumlah_penjualan');
+        $transSREXACTJackRCASP116G = Transaksi::where('id_produk', 'BRGP01621')->sum('jumlah_penjualan');
+        $transSREXACTJackMaleSVP555V = Transaksi::where('id_produk', 'BRGP01623')->sum('jumlah_penjualan');
+        $transSrexactJackAkaiMonoSP102X = Transaksi::where('id_produk', 'BRGP01809')->sum('jumlah_penjualan');
+        $transSrexactJackStereoMiniSP110AM = Transaksi::where('id_produk', 'BRGP01811')->sum('jumlah_penjualan');
 
 
         // Ambil semua produk untuk dropdown

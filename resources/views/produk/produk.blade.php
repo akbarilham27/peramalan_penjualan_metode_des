@@ -87,7 +87,8 @@
                     <th scope="row">{{ $produk->id_produk }}</th>
                     <td>{{ $produk->nama_produk }}</td>
                     <td>{{ $produk->jenis_produk }}</td>
-                    <td>{{ $produk->harga_produk }}</td>
+                    <!-- Format harga dengan number_format -->
+                    <td>{{ number_format((float)$produk->harga_produk, 0, ',', '.') }}</td>
                     <td>
                         <a href="tampilkanproduk/{{ $produk->id_produk }}" class="btn btn-outline-warning">Ubah</a>
                         <a href="javascript:void(0)" class="btn btn-outline-danger"
@@ -96,6 +97,7 @@
                 </tr>
                 @endforeach
             </tbody>
+            
         </table>
         {{-- {{ $data_produk->links() }} --}}
     </div>
@@ -150,35 +152,4 @@
     </script>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @endsection

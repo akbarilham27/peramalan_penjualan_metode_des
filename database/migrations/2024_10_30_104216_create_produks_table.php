@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('produks', function (Blueprint $table) {
-            $table->bigIncrements('id_produk'); // Ini menambahkan primary key
+            $table->string('id_produk')->primary(); // Ini menambahkan primary key
             $table->string('nama_produk');
             $table->string('jenis_produk');
             $table->string('harga_produk');

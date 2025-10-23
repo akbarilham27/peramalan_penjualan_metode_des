@@ -35,9 +35,9 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // });
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
 
     // Produk
     Route::get('/produk', [ProdukController::class, 'index'])->name('produk');
-    Route::get('/tambahproduk', [ProdukController::class, 'tambahproduk'])->name('tambahproduk');
+    Route::get('/tambahproduk', [ProdukController::class, 'tambahproduk'])->name('tambahhproduk');
     Route::post('/insertproduk', [ProdukController::class, 'insertproduk'])->name('insertproduk');
     Route::get('/tampilkanproduk/{id_produk}', [ProdukController::class, 'tampilkanproduk'])->name('tampilkanproduk');
     Route::post('/updateproduk/{id_produk}', [ProdukController::class, 'updateproduk'])->name('updateproduk');
@@ -67,8 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/peramalan', [PeramalanController::class, 'index'])->name('peramalan');
     Route::get('/peramalanku', [AlphaController::class, 'index'])->name('alpha.index');
 
-    // Route::get('/peramalan-alpha', [PeramalanController::class, 'alpha']);
-    // Route::get('/hasilpe', [HasilPEController::class, 'index']);
+    //  Route::get('/peramalan-alpha', [PeramalanController::class, 'alpha']);
+    //  Route::get('/hasilpe', [HasilPEController::class, 'index']);
 
 
     //User

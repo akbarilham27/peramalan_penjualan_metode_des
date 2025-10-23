@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\transaksi;
 use App\Models\produk;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,20 +19,44 @@ class TransaksiController extends Controller
 
     public function tambahtransaksi()
     {
-        $data_produk = produk::all();
+        $data_produk = produk::all()->sortBy('nama_produk');
         $data_transaksi = transaksi::all();
-        return view('transaksi.tambahtransaksi', compact('data_produk','data_transaksi'));
+        $lastTransaction = Transaksi::orderBy('id_transaksi', 'desc')->first();
+        $newIdTransaksi = $lastTransaction ? $lastTransaction->id_transaksi + 1 : 1; // Menambahkan 1 untuk ID baru
+        return view('transaksi.tambahtransaksi', compact('data_produk', 'data_transaksi', 'newIdTransaksi'));
     }
     public function inserttransaksi(Request $request)
     {
-        transaksi::create($request->all());
-        return redirect()->route('transaksi')->with('success', 'Data Berhasil Di Tambah');
+        // Validasi input
+        $request->validate([
+            'id_transaksi' => 'required|array',
+            'id_produk' => 'required|array',
+            'jumlah_penjualan' => 'required|array',
+            'tanggal_pengajuan' => 'required|array',
+        ]);
+    
+        // Simpan data dalam bentuk array
+        $data = [];
+        foreach ($request->id_transaksi as $key => $value) {
+            $data[] = [
+                'id_transaksi' => $value,
+                'id_produk' => $request->id_produk[$key],
+                'jumlah_penjualan' => $request->jumlah_penjualan[$key],
+                'tanggal_pengajuan' => $request->tanggal_pengajuan[$key],
+            ];
+        }
+    
+        // Insert data ke database
+        transaksi::insert($data);
+    
+        return redirect()->route('transaksi')->with('success', 'Data Berhasil Ditambah');
     }
+
     public function tampilkantransaksi($id_transaksi)
     {
         $data_produk = Produk::all();
         $data_transaksi = Transaksi::where('id_transaksi', $id_transaksi)->first();
-        return view('transaksi.tampiltransaksi', compact('data_transaksi','data_produk'));
+        return view('transaksi.tampiltransaksi', compact('data_transaksi', 'data_produk'));
     }
     public function updatetransaksi(Request $request, $id_transaksi)
     {
@@ -45,17 +70,17 @@ class TransaksiController extends Controller
         $data_transaksi->delete();
         return redirect()->route('transaksi')->with('success', 'Data Berhasil Di Delete');
     }
-   
-    public function importtransaksiexel (Request $request)
+
+    public function importtransaksiexel(Request $request)
     {
         $data_transaksi = $request->file('file');
-        $namafile = $data_transaksi ->getClientOriginalName();
-        $data_transaksi->move ('TransaksiImport', $namafile);
-        Excel::import(new TransaksiImport, \public_path('/TransaksiImport/'.$namafile));
+        $namafile = $data_transaksi->getClientOriginalName();
+        $data_transaksi->move('TransaksiImport', $namafile);
+        Excel::import(new TransaksiImport, \public_path('/TransaksiImport/' . $namafile));
         return \redirect()->back();
     }
 
-    public function deletesemuatransaksi ()
+    public function deletesemuatransaksi()
     {
         Transaksi::truncate();
         return redirect()->back();

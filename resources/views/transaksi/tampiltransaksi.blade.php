@@ -29,16 +29,16 @@
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">ID Transaksi</label>
               <input type="text" name="id_transaksi" class="form-control" id="exampleInputEmail1"
-                  aria-describedby="emailHelp" value="{{ $data_transaksi->id_transaksi }}">
+                  aria-describedby="emailHelp" value="{{ $data_transaksi->id_transaksi }}" readonly>
               <div id="id_transaksi" class="form-text"></div>
           </div>
           <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">ID Produk</label>
+              <label for="exampleInputEmail1" class="form-label">Nama Produk</label>
               <select class="form-control" name="id_produk" aria-label="Default select example">
                   @foreach ($data_produk as $row)
                       <option value="{{ $row->id_produk }}"
                           {{ $row->id_produk == $data_transaksi->id_produk ? 'selected' : '' }}>
-                          {{ $row->id_produk }}
+                          {{ $row->nama_produk }}
                       </option>
                   @endforeach
               </select>

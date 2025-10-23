@@ -37,7 +37,12 @@
       </div>
       <div class="card-body">
         <p class="login-box-msg">Sign in to start your session</p>
-
+        @if($message = Session::get('error'))
+        <div class="alert alert-light" role="alert">
+            {{ $message }}
+        </div>
+        @endif
+        
         <form action="/logininsert" method="post">
           @csrf
           <div class="input-group mb-3">

@@ -22,9 +22,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                         <h4 class="mb-10">Parameter Peramalan DES</h4>
+                        <h4 class="mb-10">Parameter Peramalan DES</h4>
                         <div class="card-header bg-light d-flex align-items-center justify-content-between">
-                           
                             <form id="peramalanForm" action="" class="form-inline">
                                 <label for="id_produk" class="mr-2">Nama Produk</label>
                                 <select class="form-control mr-4" name="id_produk">
@@ -38,23 +37,23 @@
                                 <label for="bulan_ramalan" class="mr-2">Ramal Bulan Kedepan</label>
                                 <select class="form-control mr-3" name="bulan_ramalan">
                                     @for ($i = 1; $i <= 6; $i++)
-                                        <option value="{{ $i }}" {{ request()->bulan_ramalan == $i ? 'selected' : '' }}>
-                                            {{ $i }} Bulan
-                                        </option>
+                                    <option value="{{ $i }}" {{ request()->bulan_ramalan == $i ? 'selected' : '' }}>
+                                        {{ $i }} Bulan
+                                    </option>
                                     @endfor
                                 </select>
 
-                                <label for="alpha" class="mr-2">Pilih Alpha</label>
+                                {{-- <label for="alpha" class="mr-2">Pilih Alpha</label>
                                 <select class="form-control mr-3" name="alpha">
                                     <option value="">Otomatis (Alpha Terbaik)</option>
                                     @foreach ($alphaValues as $alpha)
-                                        <option value="{{ $alpha }}" {{ request()->alpha == $alpha ? 'selected' : '' }}>
-                                            {{ $alpha }}
-                                        </option>
+                                    <option value="{{ $alpha }}" {{ request()->alpha == $alpha ? 'selected' : '' }}>
+                                        {{ $alpha }}
+                                    </option>
                                     @endforeach
-                                </select>
+                                </select> --}}
 
-                                <button type="submit" class="btn btn-success btn-sm">Hitung</button>
+                                <button type="submit" class="btn btn-success btn-sm" style="font-size: 15px; padding: 5px 40px;">Hitung</button>
                             </form>
                         </div>
 
@@ -85,12 +84,12 @@
                                     <tr>
                                         <td>{{ $value['tahun'] }}</td>
                                         <td>{{ $value['bulan'] }}</td>
-                                        <td>{{ $value['jumlah'] }}</td>
+                                        <td style="color: red;">{{ $value['jumlah'] }}</td>
                                         <td>{{ number_format($value['st'], 2) }}</td>
                                         <td>{{ number_format($value['sst'], 2) }}</td>
                                         <td>{{ number_format($value['at'], 2) }}</td>
                                         <td>{{ number_format($value['bt'], 2) }}</td>
-                                        <td>{{ number_format($value['forecast'], 2) }}</td>
+                                        <td style="color: blue;">{{ number_format($value['forecast'], 0) }}</td>
                                         <td>{{ $value['jumlah'] && $value['forecast'] ? number_format(abs($value['jumlah'] - $value['forecast']), 2) : 0 }}</td>
                                     </tr>
                                     @endforeach
@@ -112,53 +111,68 @@
                 </div>
             </div>
 
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <!-- Script Chart.js -->
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script>
-                // Data untuk grafik
+                // Ambil data
+                var labels = {!! json_encode(array_map(function($value) {
+                    return $value['tahun'] . '-' . str_pad($value['bulan'], 2, '0', STR_PAD_LEFT);
+                }, $bestValues)) !!};
+
                 var actualData = {!! json_encode(array_column($bestValues, 'jumlah')) !!};
                 var forecastData = {!! json_encode(array_column($bestValues, 'forecast')) !!};
 
-                // Buang data pertama dari actualData karena tidak ada prediksi untuk bulan pertama
-                forecastData[0] = null;
-                actualData.pop();
+                // Atur forecast null untuk bulan pertama
+                // forecastData.unshift(null);
 
                 var ctx = document.getElementById('myChart').getContext('2d');
                 var chart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: {!! json_encode(array_map(function($value) {
-                            return $value['tahun'] . '-' . str_pad($value['bulan'], 2, '0', STR_PAD_LEFT);
-                        }, $bestValues)) !!},
+                        labels: labels,
                         datasets: [
                             {
-                                label: 'Aktual',
+                                label: 'Penjualan',
                                 data: actualData,
                                 borderColor: 'red',
                                 borderWidth: 2,
-                                fill: false
+                                fill: false,
+                                pointRadius: 4,
+                                pointBackgroundColor: 'red'
                             },
                             {
                                 label: 'Peramalan',
                                 data: forecastData,
                                 borderColor: 'blue',
                                 borderWidth: 2,
-                                fill: false
+                                fill: false,
+                                pointRadius: 4,
+                                pointBackgroundColor: 'blue'
                             }
                         ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Grafik Peramalan Penjualan'
+                            }
+                        },
                         scales: {
                             x: {
-                                type: 'category',
-                                labels: {!! json_encode(array_map(function($value) {
-                                    return $value['tahun'] . '-' . str_pad($value['bulan'], 2, '0', STR_PAD_LEFT);
-                                }, $bestValues)) !!}
+                                title: {
+                                    display: true,
+                                    text: 'Periode (Tahun-Bulan)'
+                                }
                             },
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Penjualan'
+                                }
                             }
                         }
                     }

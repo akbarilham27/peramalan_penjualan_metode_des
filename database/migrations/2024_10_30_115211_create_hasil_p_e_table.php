@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hasil_p_e', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('produk_id');
+            $table->string('produk_id');
             $table->integer('bulan');
             $table->integer('tahun');
             $table->float('jumlah');

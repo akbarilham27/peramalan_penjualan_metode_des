@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Produk extends Model
 {
     use HasFactory;
+    protected $table = 'produks';
+    protected $primaryKey = 'id_produk';
 
-    protected $primaryKey = 'id_produk'; // Primary key
-
-    public $incrementing = false; // Non-increment key
-    protected $keyType = 'string'; // Primary key berupa string
-
-    protected $guarded = []; // Semua field bisa diisi (mass assignable)
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $fillable = [
+        'id_produk',
+        'nama_produk',
+        'jenis_produk',
+        'harga_produk',
+    ];
 }
-

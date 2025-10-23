@@ -15,11 +15,10 @@ class TransaksiImport implements ToModel
     public function model(array $row)
     {
         return new Transaksi([
-            'id_transaksi' => $row[0],
-            'id_produk' => $row[1],
-            'nama_produk' => $row[2],
-            'jumlah_penjualan'=> $row[3],
-            'tanggal_pengajuan' => $row[4],
+            'id_produk' => $row[0],
+            'nama_produk' => $row[1],
+            'jumlah_penjualan'=> $row[2],
+            'tanggal_pengajuan' => $row[3],
         ]);
     }
 }
